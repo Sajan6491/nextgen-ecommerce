@@ -1,0 +1,51 @@
+.men-page {
+  padding: 50px 20px;
+  text-align: center;
+  background: #f9f9f9;
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(90deg, #1e1e2f, #ff6347);
+  color: #fff;
+  padding: 50px 20px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 18px;
+}
+
+.filters {
+  margin-bottom: 30px;
+}
+
+.filters button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: 1px solid #1e1e2f;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.filters button.active,
+.filters button:hover {
+  background: #1e1e2f;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}

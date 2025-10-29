@@ -1,0 +1,120 @@
+/* Container */
+.product-slider-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* Heading */
+.slider-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+.slider-heading span {
+  color: #2563eb; /* Blue accent */
+}
+
+/* Loading text */
+.loading-text {
+  text-align: center;
+  padding: 50px 0;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Product Card */
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+.product-card:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Image */
+.product-image-container {
+  width: 100%;
+  height: 350px;
+  background: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Content */
+.product-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+.product-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  height: 45px;
+  overflow: hidden;
+}
+.product-price {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Button */
+.add-to-cart-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.add-to-cart-btn:hover {
+  background: #1e4fc1;
+}
+
+/* Swiper Pagination (5 dynamic bullets) */
+.swiper-pagination {
+  position: relative !important;
+  margin-top: 20px;
+  bottom: 0 !important;
+  text-align: center;
+}
+.swiper-pagination-bullet {
+  background: #2563eb;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+  background: #2563eb;
+  opacity: 1;
+  transform: scale(1.3);
+}

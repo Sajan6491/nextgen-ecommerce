@@ -1,0 +1,28 @@
+.cart-page {
+  padding: 24px;
+}
+
+.cart-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cart-empty {
+  color: #666;
+  font-size: 16px;
+}
+
+.cart-total {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.remove-button {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}

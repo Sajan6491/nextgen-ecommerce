@@ -1,0 +1,17 @@
+.jeans-page {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.jeans-page h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}

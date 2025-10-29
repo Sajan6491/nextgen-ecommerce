@@ -1,0 +1,18 @@
+.accessories-page {
+  padding: 50px 20px;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+.accessories-page h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #1e1e2f;
+}
+
+.products-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
