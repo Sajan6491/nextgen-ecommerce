@@ -1,0 +1,136 @@
+.favorites-section {
+  padding: 80px 8%;
+  background: #fff;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+}
+
+.favorites-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.favorites-header p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 35px;
+  justify-items: center;
+}
+
+.favorite-item {
+  background: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+}
+
+.favorite-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.fav-img-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.fav-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.favorite-item:hover img {
+  transform: scale(1.1);
+}
+
+.fav-heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fav-heart:hover {
+  background: #ff3366;
+  color: white;
+}
+
+.fav-heart.active {
+  background: #ff3366;
+  color: white;
+}
+
+.fav-details {
+  padding: 20px;
+}
+
+.fav-details h3 {
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.price {
+  color: #007bff;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.fav-btn {
+  padding: 10px 25px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-weight: 500;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fav-btn:hover {
+  background: #0056b3;
+}
+
+.show-more-container {
+  margin-top: 40px;
+}
+
+.show-more-btn {
+  padding: 12px 35px;
+  border: none;
+  background: #222;
+  color: white;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.show-more-btn:hover {
+  background: #000;
+  transform: scale(1.05);
+}

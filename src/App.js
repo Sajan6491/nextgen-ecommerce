@@ -20,6 +20,7 @@ import CheckoutPage from "./components/CheckoutPage";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ThankYouPage from "./pages/ThankYouPage";
+import ShopYourFavorites from "./components/ShopYourFavorites";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Hero />
           <FeaturedProducts />
           <ProductList />
+          <ShopYourFavorites />
           <ProductSlider />
           <FAQ />
         </>
