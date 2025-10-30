@@ -21,6 +21,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ThankYouPage from "./pages/ThankYouPage";
 import ShopYourFavorites from "./components/ShopYourFavorites";
+import TopDeals from "./components/TopDeals";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 <FeaturedProducts />
                 <ProductList />
                 <ShopYourFavorites />
+                 <TopDeals />
                 <ProductSlider />
                 <FAQ />
               </>
