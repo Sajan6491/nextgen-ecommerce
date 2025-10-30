@@ -19,6 +19,7 @@ import CartPage from "./components/CartPage";
 import CheckoutPage from "./components/CheckoutPage";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ThankYouPage from "./pages/ThankYouPage";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
     <Route path="/cart" element={<CartPage />} />
     <Route path="/checkout" element={<CheckoutPage />} />
     <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/thank-you" element={<ThankYouPage />} />
   </Routes>
   <Footer />
   <SurpriseButton />
