@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom"; // ✅ Use HashRouter
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import FeaturedProducts from "./components/FeaturedProducts";
@@ -25,37 +25,36 @@ import ShopYourFavorites from "./components/ShopYourFavorites";
 function App() {
   return (
     <CartProvider>
-   <Router>
-  <Navbar />
-  <Routes>
-    {/* Home Page */}
-    <Route
-      path="/"
-      element={
-        <>
-          <Hero />
-          <FeaturedProducts />
-          <ProductList />
-          <ShopYourFavorites />
-          <ProductSlider />
-          <FAQ />
-        </>
-      }
-    />
-    <Route path="/men" element={<MenPage />} />
-    <Route path="/men/t-shirts" element={<TShirtsPage />} />
-    <Route path="/men/jeans" element={<JeansPage />} />
-    <Route path="/accessories" element={<AccessoriesPage />} />
-    <Route path="/cart" element={<CartPage />} />
-    <Route path="/checkout" element={<CheckoutPage />} />
-    <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/thank-you" element={<ThankYouPage />} />
-  </Routes>
-  <Footer />
-  <SurpriseButton />
-  <WhatsAppChat />
-</Router>
-
+      <Router>
+        <Navbar />
+        <Routes>
+          {/* Home Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                <FeaturedProducts />
+                <ProductList />
+                <ShopYourFavorites />
+                <ProductSlider />
+                <FAQ />
+              </>
+            }
+          />
+          <Route path="/men" element={<MenPage />} />
+          <Route path="/men/t-shirts" element={<TShirtsPage />} />
+          <Route path="/men/jeans" element={<JeansPage />} />
+          <Route path="/accessories" element={<AccessoriesPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
+        </Routes>
+        <Footer />
+        <SurpriseButton />
+        <WhatsAppChat />
+      </Router>
     </CartProvider>
   );
 }
