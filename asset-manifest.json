@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/ecommerce-site/static/css/main.28899298.css",
-    "main.js": "/ecommerce-site/static/js/main.cc058da9.js",
-    "static/media/travel-and-hospitality-best-travel-web-development-company.webp": "/ecommerce-site/static/media/travel-and-hospitality-best-travel-web-development-company.84c93c193001596590b6.webp",
-    "static/media/accessory1.webp": "/ecommerce-site/static/media/accessory1.ad39a0752a34998434b9.webp",
-    "static/media/slick.svg": "/ecommerce-site/static/media/slick.2630a3e3eab21c607e21.svg",
-    "static/media/slick.eot": "/ecommerce-site/static/media/slick.a4e97f5a2a64f0ab1323.eot",
-    "static/media/slick.ttf": "/ecommerce-site/static/media/slick.c94f7671dcc99dce43e2.ttf",
-    "static/media/slick.woff": "/ecommerce-site/static/media/slick.295183786cd8a1389865.woff",
-    "index.html": "/ecommerce-site/index.html",
-    "main.28899298.css.map": "/ecommerce-site/static/css/main.28899298.css.map",
-    "main.cc058da9.js.map": "/ecommerce-site/static/js/main.cc058da9.js.map"
+    "main.css": "/nextgen-ecommerce/static/css/main.56573ae7.css",
+    "main.js": "/nextgen-ecommerce/static/js/main.c667ee2f.js",
+    "static/media/travel-and-hospitality-best-travel-web-development-company.webp": "/nextgen-ecommerce/static/media/travel-and-hospitality-best-travel-web-development-company.84c93c193001596590b6.webp",
+    "static/media/accessory1.webp": "/nextgen-ecommerce/static/media/accessory1.ad39a0752a34998434b9.webp",
+    "static/media/slick.svg": "/nextgen-ecommerce/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/nextgen-ecommerce/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/nextgen-ecommerce/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/nextgen-ecommerce/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/nextgen-ecommerce/index.html",
+    "main.56573ae7.css.map": "/nextgen-ecommerce/static/css/main.56573ae7.css.map",
+    "main.c667ee2f.js.map": "/nextgen-ecommerce/static/js/main.c667ee2f.js.map"
   },
   "entrypoints": [
-    "static/css/main.28899298.css",
-    "static/js/main.cc058da9.js"
+    "static/css/main.56573ae7.css",
+    "static/js/main.c667ee2f.js"
   ]
 }
