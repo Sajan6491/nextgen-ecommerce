@@ -22,6 +22,7 @@ import "slick-carousel/slick/slick-theme.css";
 import ThankYouPage from "./pages/ThankYouPage";
 import ShopYourFavorites from "./components/ShopYourFavorites";
 import TopDeals from "./components/TopDeals";
+import ProductListPage from "./pages/ProductListPage";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
+           <Route path="/plp" element={<ProductListPage />} />
         </Routes>
         <Footer />
         <SurpriseButton />
