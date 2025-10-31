@@ -23,6 +23,7 @@ import ThankYouPage from "./pages/ThankYouPage";
 import ShopYourFavorites from "./components/ShopYourFavorites";
 import TopDeals from "./components/TopDeals";
 import ProductListPage from "./pages/ProductListPage";
+import FurnitureDeals from "./components/FurnitureDeals";
 
 function App() {
   return (
@@ -39,7 +40,8 @@ function App() {
                 <FeaturedProducts />
                 <ProductList />
                 <ShopYourFavorites />
-                 <TopDeals />
+                <TopDeals />
+                <FurnitureDeals />
                 <ProductSlider />
                 <FAQ />
               </>
