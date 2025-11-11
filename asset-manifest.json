@@ -1,7 +1,9 @@
 {
   "files": {
-    "main.css": "/nextgen-ecommerce/static/css/main.dcd269f8.css",
-    "main.js": "/nextgen-ecommerce/static/js/main.d5e68081.js",
+    "main.css": "/nextgen-ecommerce/static/css/main.af59c6eb.css",
+    "main.js": "/nextgen-ecommerce/static/js/main.c97ebb0d.js",
+    "cities-in.js": "/nextgen-ecommerce/static/js/cities-in.2f59b628.chunk.js",
+    "cities-us.js": "/nextgen-ecommerce/static/js/cities-us.eb475470.chunk.js",
     "static/media/travel-and-hospitality-best-travel-web-development-company.webp": "/nextgen-ecommerce/static/media/travel-and-hospitality-best-travel-web-development-company.84c93c193001596590b6.webp",
     "static/media/accessory1.webp": "/nextgen-ecommerce/static/media/accessory1.ad39a0752a34998434b9.webp",
     "static/media/slick.svg": "/nextgen-ecommerce/static/media/slick.2630a3e3eab21c607e21.svg",
@@ -9,11 +11,11 @@
     "static/media/slick.ttf": "/nextgen-ecommerce/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/nextgen-ecommerce/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/nextgen-ecommerce/index.html",
-    "main.dcd269f8.css.map": "/nextgen-ecommerce/static/css/main.dcd269f8.css.map",
-    "main.d5e68081.js.map": "/nextgen-ecommerce/static/js/main.d5e68081.js.map"
+    "main.af59c6eb.css.map": "/nextgen-ecommerce/static/css/main.af59c6eb.css.map",
+    "main.c97ebb0d.js.map": "/nextgen-ecommerce/static/js/main.c97ebb0d.js.map"
   },
   "entrypoints": [
-    "static/css/main.dcd269f8.css",
-    "static/js/main.d5e68081.js"
+    "static/css/main.af59c6eb.css",
+    "static/js/main.c97ebb0d.js"
   ]
 }
