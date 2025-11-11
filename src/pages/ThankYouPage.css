@@ -1,0 +1,89 @@
+.ty-container {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.ty-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.1);
+  padding: 24px;
+  border: 1px solid #eee;
+}
+
+.ty-success {
+  color: #0baa39;
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.ty-ref {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.ty-flight h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.ty-route {
+  color: #555;
+  margin: 6px 0;
+}
+
+.ty-info {
+  color: #666;
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+.ty-price {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 18px 0;
+}
+
+.ty-btns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  background: #111827;
+  color: #6b6b6b;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  filter: brightness(.92);
+}
+
+.btn.outline {
+  background: #fff;
+  color: #111;
+  border: 1px solid #333;
+}
+
+.ty-small {
+  margin-top: 12px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Print mode */
+@media print {
+  .btn, .ty-small { display: none !important; }
+  .ty-card { box-shadow: none; border: none; }
+}

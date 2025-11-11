@@ -1,0 +1,5 @@
+[
+  { "city": "Delhi", "state": "Delhi", "country": "India", "code": "DEL", "airport": "Indira Gandhi Intl" },
+  { "city": "Mumbai", "state": "Maharashtra", "country": "India", "code": "BOM", "airport": "Chhatrapati Shivaji Intl" },
+  { "city": "Bengaluru", "state": "Karnataka", "country": "India", "code": "BLR", "airport": "Kempegowda Intl" }
+]

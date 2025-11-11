@@ -1,0 +1,5 @@
+[
+  { "city": "New York", "state": "New York", "country": "United States", "code": "NYC", "airport": "All Airports" },
+  { "city": "Los Angeles", "state": "California", "country": "United States", "code": "LAX", "airport": "Los Angeles Intl" },
+  { "city": "Chicago", "state": "Illinois", "country": "United States", "code": "CHI", "airport": "All Airports" }
+]
