@@ -1,10 +1,11 @@
+/* MAIN WRAPPER */
 .th {
     background: #f6f7fb;
     min-height: calc(100vh - 120px);
     padding: 0 6%;
 }
 
-/* Hero */
+/* ============ HERO ============ */
 .th-hero {
     height: 500px;
     margin: 0 auto;
@@ -51,7 +52,7 @@
     margin-top: 10px;
 }
 
-/* Card */
+/* ============ CARD ============ */
 .th-card {
     max-width: 1400px;
     margin: -100px auto 24px;
@@ -62,7 +63,7 @@
     box-shadow: 0 14px 36px rgba(0, 0, 0, .12);
 }
 
-/* Tabs */
+/* ============ TABS ============ */
 .th-tabs {
     display: flex;
     gap: 10px;
@@ -83,7 +84,7 @@
     color: #fff;
 }
 
-/* Popular */
+/* ============ POPULAR TAGS ============ */
 .th-popular {
     display: flex;
     align-items: center;
@@ -111,7 +112,7 @@
     background: #e9eeff;
 }
 
-/* Grid */
+/* ============ GRID FORM ============ */
 .th-grid {
     display: grid;
     gap: 12px;
@@ -122,13 +123,12 @@
     .th-grid {
         grid-template-columns: 1fr 1fr;
     }
-
     .swap {
         display: none;
     }
 }
 
-/* Fields + inputs */
+/* ============ INPUT FIELDS ============ */
 .field {
     position: relative;
     display: flex;
@@ -154,7 +154,7 @@
     box-shadow: 0 0 0 3px rgba(47, 91, 234, .14);
 }
 
-/* Suggestions */
+/* ============ AUTO SUGGEST ============ */
 .suggest {
     position: absolute;
     top: 100%;
@@ -189,16 +189,7 @@
     background: #f4f7ff;
 }
 
-.suggest .left b {
-    font-weight: 800;
-}
-
-.suggest .right {
-    color: #6b7280;
-    font-size: 12px;
-}
-
-/* Quick dates */
+/* ============ QUICK DATES ============ */
 .quick {
     display: flex;
     gap: 8px;
@@ -218,7 +209,7 @@
     background: #eef2ff;
 }
 
-/* Swap */
+/* ============ SWAP ============ */
 .swap {
     border: none;
     background: #f2f4f8;
@@ -230,7 +221,7 @@
     justify-content: center;
 }
 
-/* Travellers pop */
+/* ============ TRAVELLERS POPUP ============ */
 .travBtn {
     text-align: left;
     border: 1px solid #d7dbe7;
@@ -329,7 +320,7 @@
     cursor: pointer;
 }
 
-/* Submit + error */
+/* ============ SEARCH BUTTON + ERROR BOX ============ */
 .searchBtn {
     border: none;
     background: #2f5bea;
@@ -346,4 +337,67 @@
     background: #fff2f2;
     border: 1px solid #ffdcdc;
     color: #a40000;
+}
+
+/* =========================================================
+                 ✅ FULL RESPONSIVE MEDIA QUERIES
+========================================================= */
+
+/* 1280px */
+@media (max-width: 1280px) {
+    .th-hero { height: 460px; }
+    .th-card { max-width: 1100px; }
+}
+
+/* 1024px */
+@media (max-width: 1024px) {
+    .th { padding: 0 4%; }
+    .th-hero { height: 420px; }
+    .th-grid { grid-template-columns: 1fr 40px 1fr 1fr 1fr; }
+    .swap { width: 40px; }
+}
+
+/* 980px */
+@media (max-width: 980px) {
+    .th-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .swap { display: none; }
+    .th-card { margin: -80px auto 20px; }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+    .th { padding: 0 3%; }
+    .th-hero { height: 360px; }
+    .th-hero-inner h1 { font-size: 24px; }
+    .th-grid { grid-template-columns: 1fr; }
+    .searchBtn { width: 100%; padding: 12px; }
+}
+
+/* 560px */
+@media (max-width: 560px) {
+    .th-hero { height: 330px; }
+    .th-card { margin: -64px auto 16px; }
+}
+
+/* 480px */
+@media (max-width: 480px) {
+    .th { padding: 0 16px; }
+    .th-hero { height: 300px; }
+    .chip { padding: 5px 9px; font-size: 11px; }
+}
+
+/* 360px */
+@media (max-width: 360px) {
+    .th-hero { height: 280px; }
+    .th-tabs button { padding: 6px 8px; font-size: 11px; }
+    .chip { padding: 4px 8px; font-size: 10px; }
+}
+
+/* ✅ 320px – TINY PHONES */
+@media (max-width: 320px) {
+    .th { padding: 0 12px; }
+    .th-hero { height: 260px; border-radius: 10px; padding: 12px; }
+    .th-hero-inner h1 { font-size: 20px; line-height: 26px; margin: 6px 0; }
+    .th-grid { grid-template-columns: 1fr; gap: 8px; }
+    .searchBtn { width: 100%; padding: 12px; font-size: 14px; }
 }
