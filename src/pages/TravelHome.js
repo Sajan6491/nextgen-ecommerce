@@ -1,4 +1,3 @@
-// src/pages/TravelHome.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchCities, useCitiesReady } from "../data/cities";
@@ -11,6 +10,8 @@ const POPULAR = [
   { from: "Hyderabad (HYD)", to: "Pune (PNQ)" },
   { from: "Kolkata (CCU)", to: "Delhi (DEL)" },
 ];
+
+const DEFAULT_TRAV = { adults: 1, children: 0, infants: 0, cls: "Economy" };
 
 function todayISO() { return new Date().toISOString().slice(0, 10); }
 function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t.toISOString().slice(0, 10); }
@@ -85,7 +86,7 @@ function CityInput({ label, value, onChange, placeholder = "City or airport", au
 export default function TravelHome() {
   const nav = useNavigate();
   const { state } = useLocation();
-  const ready = useCitiesReady();          // ✅ wait for cities
+  const ready = useCitiesReady();
 
   const promo = useMemo(
     () => state || { headline: "Get. Set. Travel.", note: "Search flights, compare fares, book instantly." },
@@ -97,7 +98,7 @@ export default function TravelHome() {
   const [to, setTo] = useState("");
   const [depart, setDepart] = useState("");
   const [ret, setRet] = useState("");
-  const [trav, setTrav] = useState({ adults: 1, children: 0, infants: 0, cls: "Economy" });
+  const [trav, setTrav] = useState(DEFAULT_TRAV);
   const [showTrav, setShowTrav] = useState(false);
   const [err, setErr] = useState("");
 
@@ -117,12 +118,17 @@ export default function TravelHome() {
     }
   };
 
+  // Safer bump that keeps constraints live
   const bump = (k, n) => setTrav((p) => {
-    const next = Math.max(0, p[k] + n);
-    const out = { ...p, [k]: next };
-    if (out.adults === 0 && (out.children > 0 || out.infants > 0)) out.adults = 1;
-    if (out.infants > out.adults) out.infants = out.adults;
-    return out;
+    let next = Math.max(0, p[k] + n);
+    let a = k === "adults" ? next : p.adults;
+    let c = k === "children" ? next : p.children;
+    let i = k === "infants" ? next : p.infants;
+
+    if (a === 0 && (c > 0 || i > 0)) a = 1; // need at least one adult if kids/infants present
+    if (i > a) i = a;                       // infants ≤ adults
+
+    return { ...p, adults: a, children: c, infants: i };
   });
 
   const validate = () => {
@@ -136,13 +142,19 @@ export default function TravelHome() {
     const v = validate();
     if (v) { setErr(v); return; }
     setErr("");
+
+    // Send real counts so totals can be calculated on search page
     const payload = {
       trip,
       from: from.trim(),
       to: to.trim(),
       depart,
       ...(trip === "round" && ret ? { return: ret } : {}),
-      pax: paxSummary,
+      adults: trav.adults,
+      children: trav.children,
+      infants: trav.infants,
+      cls: trav.cls,
+      totalPax: totalPax,
     };
     nav(`/travel/search?${new URLSearchParams(payload).toString()}`);
   };
@@ -239,8 +251,30 @@ export default function TravelHome() {
                   </div>
 
                   <div className="pop-actions">
-                    <button type="button" className="clear" onClick={() => setTrav({ adults: 1, children: 0, infants: 0, cls: "Economy" })}>Reset</button>
-                    <button type="button" className="apply" onClick={() => setShowTrav(false)}>Done</button>
+                    <button
+                      type="button"
+                      className="clear"
+                      onClick={() => { setTrav(DEFAULT_TRAV); setShowTrav(false); }}
+                    >
+                      Reset
+                    </button>
+                    <button
+                      type="button"
+                      className="apply"
+                      onClick={() => {
+                        setTrav((p) => {
+                          let a = Math.max(0, p.adults);
+                          let c = Math.max(0, p.children);
+                          let i = Math.max(0, p.infants);
+                          if (a === 0 && (c > 0 || i > 0)) a = 1;
+                          if (i > a) i = a;
+                          return { ...p, adults: a, children: c, infants: i };
+                        });
+                        setShowTrav(false);
+                      }}
+                    >
+                      Done
+                    </button>
                   </div>
                 </div>
               )}
