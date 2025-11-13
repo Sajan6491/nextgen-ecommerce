@@ -1,0 +1,331 @@
+/* src/components/ProductCard.css */
+/* Styles for ProductCard (external file) */
+
+.pc-card {
+    width: 220px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 0;
+    text-align: left;
+    box-shadow: 0px 6px 18px rgba(12, 20, 40, 0.06);
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.pc-card:focus {
+    outline: 2px solid rgba(54, 120, 255, 0.12);
+    outline-offset: 2px;
+}
+
+.pc-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 50px rgba(12, 20, 40, 0.12);
+}
+
+.pc-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    /* fixed height so all cards aligned even if image missing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #fbfdff, #f7f9ff);
+}
+
+/* real image */
+.pc-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* placeholder when no image */
+.pc-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa4bd;
+    font-weight: 700;
+    background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.02) 0 6px, transparent 6px 12px);
+}
+
+/* badge */
+.pc-badge {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(90deg, #ff6b6b, #ffbf6b);
+    font-size: 12px;
+    box-shadow: 0 8px 20px rgba(255, 110, 90, 0.08);
+}
+
+/* quick view button in image area */
+.pc-quickbtn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* wishlist heart smaller at bottom-right of image */
+.pc-wish {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px 8px;
+    border-radius: 999px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* body area */
+.pc-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.pc-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: #0b1220;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.pc-brand {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* price row */
+.pc-price-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.pc-price {
+    font-weight: 900;
+    color: #0b1220;
+    font-size: 16px;
+}
+
+.pc-old {
+    font-size: 12px;
+    color: #9aa4bd;
+    text-decoration: line-through;
+}
+
+/* meta row */
+.pc-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.pc-stars {
+    color: #ffb74d;
+    font-size: 13px;
+    display: flex;
+    gap: 4px;
+}
+
+.pc-stars span {
+    opacity: 0.25;
+}
+
+.pc-stars span.on {
+    opacity: 1;
+}
+
+.pc-reviews {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* actions */
+.pc-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+.pc-add,
+.pc-buy {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.pc-add {
+    background: #0b74de;
+}
+
+.pc-buy {
+    background: #ff6b6b;
+}
+
+/* disabled add */
+.pc-add[disabled],
+.pc-add[aria-disabled="true"] {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    color: #fff;
+}
+
+/* Quick modal overlay & card */
+.pc-quick-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1400;
+    padding: 18px;
+}
+
+.pc-quick-card {
+    width: min(900px, 96%);
+    max-height: 90vh;
+    overflow: auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(3, 6, 18, 0.35);
+}
+
+/* quick left/right */
+.pc-quick-left {
+    flex: 0 0 300px;
+}
+
+.pc-quick-image {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    background: #f7f9ff;
+    border-radius: 8px;
+}
+
+/* right side */
+.pc-quick-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pc-quick-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.pc-desc {
+    color: #374151;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* quick modal buttons */
+.pc-quick-close {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.pc-add.big,
+.pc-buy.big {
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.pc-close-btn {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+/* responsive tweaks */
+@media (max-width: 900px) {
+    .pc-card {
+        width: calc(50% - 12px);
+    }
+
+    .pc-quick-left {
+        flex: 0 0 220px;
+    }
+
+    .pc-quick-image {
+        height: 220px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pc-card {
+        width: 100%;
+    }
+
+    .pc-image-wrap {
+        height: 180px;
+    }
+
+    .pc-quick-card {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .pc-quick-left {
+        width: 100%;
+    }
+
+    .pc-quick-image {
+        height: 260px;
+    }
+}

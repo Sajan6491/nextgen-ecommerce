@@ -1,77 +1,28 @@
-// 👉 First data array (Named export)
-export const products = [
-  { 
-    id: 1, 
-    name: "Smartphone", 
-    price: "$250", 
-    rating: 4, 
-    category: "Electronics", 
-    image: "https://via.placeholder.com/200x150" 
-  },
-  { 
-    id: 2, 
-    name: "Sneakers", 
-    price: "$80", 
-    rating: 5, 
-    category: "Shoes", 
-    image: "https://via.placeholder.com/200x150" 
-  },
-  { 
-    id: 3, 
-    name: "Headphones", 
-    price: "$120", 
-    rating: 4, 
-    category: "Electronics", 
-    image: "https://via.placeholder.com/200x150" 
-  },
-  { 
-    id: 4, 
-    name: "Watch", 
-    price: "$200", 
-    rating: 5, 
-    category: "Accessories", 
-    image: "https://via.placeholder.com/200x150" 
-  }
+// src/data/products.js
+// Expanded product catalog (20+ items) — images chosen to match product names
+
+const PRODUCTS = [
+  { id: "p101", title: "Premium Smartphone X12", brand: "TechNova", category: "Electronics", price: 24999, oldPrice: 29999, rating: 4.6, reviews: 241, img: "https://images.unsplash.com/photo-1510557880182-3be05652a67c?w=900&q=80&auto=format&fit=crop", badge: "Hot", inStock: true },
+  { id: "p102", title: "Wireless Noise-Cancel Headphones", brand: "BeatSound", category: "Electronics", price: 6999, oldPrice: 8999, rating: 4.4, reviews: 122, img: "https://images.unsplash.com/photo-1518443952249-7e41b44f49ff?w=900&q=80&auto=format&fit=crop", badge: "Trending", inStock: true },
+  { id: "p103", title: "Classic Running Sneakers", brand: "RoadFlex", category: "Shoes", price: 2199, oldPrice: 3499, rating: 4.1, reviews: 318, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=80&auto=format&fit=crop", badge: "Best Seller", inStock: true },
+  { id: "p104", title: "Men’s Black T-Shirt", brand: "UrbanWear", category: "T-Shirts", price: 499, oldPrice: 799, rating: 4.3, reviews: 402, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80&auto=format&fit=crop", badge: "New", inStock: true },
+  { id: "p105", title: "Red Oversize Hoodie", brand: "UrbanWear", category: "Hoodies", price: 1199, oldPrice: 1599, rating: 4.7, reviews: 189, img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=900&q=80&auto=format&fit=crop", badge: "Hot", inStock: true },
+  { id: "p106", title: "Blue Slim Jeans", brand: "Nova", category: "Jeans", price: 1399, oldPrice: 1899, rating: 4.1, reviews: 155, img: "https://images.unsplash.com/photo-1583006782211-4970a5da31f9?w=900&q=80&auto=format&fit=crop", badge: null, inStock: true },
+  { id: "p107", title: "Leather Wrist Watch", brand: "Aster", category: "Watches", price: 4599, oldPrice: 5999, rating: 4.8, reviews: 310, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=900&q=80&auto=format&fit=crop", badge: "Premium", inStock: true },
+  { id: "p108", title: "Cozy Winter Jacket", brand: "Nest", category: "Jackets", price: 3499, oldPrice: 4199, rating: 4.2, reviews: 202, img: "https://images.unsplash.com/photo-1618354691373-d5e8e81b8935?w=900&q=80&auto=format&fit=crop", badge: "Winter Sale", inStock: true },
+  { id: "p109", title: "Cap – Urban Classic", brand: "UrbanWear", category: "Accessories", price: 399, oldPrice: null, rating: 4.0, reviews: 78, img: "https://images.unsplash.com/photo-1585386959984-a4155228f2ec?w=900&q=80&auto=format&fit=crop", badge: "Hot", inStock: true },
+
+  { id: "p110", title: "Sport Shoes Limited Edition", brand: "AirLift", category: "Shoes", price: 2899, oldPrice: 3599, rating: 4.5, reviews: 266, img: "https://images.unsplash.com/photo-1528701800489-20be3c2a3c09?w=900&q=80&auto=format&fit=crop", badge: null, inStock: true },
+  { id: "p111", title: "Women Pink Top", brand: "Trendify", category: "Tops", price: 599, oldPrice: 999, rating: 4.3, reviews: 152, img: "https://images.unsplash.com/photo-1542219550-8f1d0d4ec8ba?w=900&q=80&auto=format&fit=crop", badge: "New Arrival", inStock: true },
+  { id: "p112", title: "Premium Leather Bag", brand: "Luxora", category: "Accessories", price: 2499, oldPrice: 2999, rating: 4.9, reviews: 422, img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=900&q=80&auto=format&fit=crop", badge: "Luxury", inStock: true },
+  { id: "p113", title: "Thin Laptop 14\"", brand: "WorkPro", category: "Electronics", price: 54999, oldPrice: 64999, rating: 4.5, reviews: 501, img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&q=80&auto=format&fit=crop", badge: "Deal", inStock: true },
+  { id: "p114", title: "Smart Fitness Band", brand: "FitPro", category: "Wearables", price: 1999, oldPrice: 2499, rating: 4.0, reviews: 98, img: "https://images.unsplash.com/photo-1539883377539-1f7d85ad82f9?w=900&q=80&auto=format&fit=crop", badge: null, inStock: true },
+  { id: "p115", title: "Ceramic Coffee Mug Set", brand: "HomeBrew", category: "Home Decor", price: 999, oldPrice: 1299, rating: 4.2, reviews: 44, img: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=900&q=80&auto=format&fit=crop", badge: null, inStock: true },
+  { id: "p116", title: "Minimal Desk Lamp", brand: "GlowDesk", category: "Home Decor", price: 1299, oldPrice: 1699, rating: 4.4, reviews: 70, img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=900&q=80&auto=format&fit=crop", badge: "Top Rated", inStock: true },
+  { id: "p117", title: "Sunglasses – Midnight", brand: "ShadeX", category: "Accessories", price: 1599, oldPrice: 1999, rating: 4.5, reviews: 130, img: "https://images.unsplash.com/photo-1591076482161-42ce3b1e4f74?w=900&q=80&auto=format&fit=crop", badge: "Hot", inStock: true },
+  { id: "p118", title: "Travel Backpack 30L", brand: "RoadPack", category: "Bags", price: 2199, oldPrice: 2799, rating: 4.3, reviews: 98, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop", badge: null, inStock: true },
+  { id: "p119", title: "Kitchen Knife Set", brand: "ChefPro", category: "Kitchen", price: 3499, oldPrice: 4499, rating: 4.6, reviews: 59, img: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=900&q=80&auto=format&fit=crop", badge: "Sale", inStock: true },
+  { id: "p120", title: "Yoga Mat – Eco", brand: "ZenMove", category: "Fitness", price: 899, oldPrice: 1299, rating: 4.2, reviews: 37, img: "https://images.unsplash.com/photo-1518611012118-f076b5d3c2a3?w=900&q=80&auto=format&fit=crop", badge: null, inStock: true }
 ];
 
-// 👉 Second data array (Default export)
-const productsData = [
-{
-  id: 1,
-  title: "Black T-Shirt",
-  price: 20,
-  category: "Clothing",
-  image: "https://dummyimage.com/300x300/000/fff&text=Black+T-Shirt",
-},
-{
-  id: 2,
-  title: "Red Hoodie",
-  price: 35,
-  category: "Clothing",
-  image: "https://dummyimage.com/300x300/ff0000/fff&text=Red+Hoodie",
-},
-{
-  id: 3,
-  title: "Blue Jeans",
-  price: 40,
-  category: "Clothing",
-  image: "https://dummyimage.com/300x300/0000ff/fff&text=Blue+Jeans",
-},
-{
-  id: 4,
-  title: "Sneakers",
-  price: 60,
-  category: "Shoes",
-  image: "https://dummyimage.com/300x300/888/fff&text=Sneakers",
-},
-{
-  id: 5,
-  title: "Leather Jacket",
-  price: 100,
-  category: "Clothing",
-  image: "https://dummyimage.com/300x300/333/fff&text=Leather+Jacket",
-},
-
-];
-
-export default productsData;
+export default PRODUCTS;

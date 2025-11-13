@@ -1,0 +1,183 @@
+/* src/pages/ShopPage.css
+   Upgraded page-level styles: denser responsive grid, improved controls,
+   accessible focus states, no component-level selectors (safe with ProductCard.css).
+*/
+
+:root{
+  --bg: #f7f9ff;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --text: #071226;
+  --accent1: #4f46e5;
+  --accent2: #3b82f6;
+  --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+  --gap: 14px;            /* slightly tighter */
+  --radius: 14px;
+  --shadow-sm: 0 10px 30px rgba(12,20,40,0.06);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* page background + base */
+body { background: var(--bg); color: var(--text); margin:0; padding:0; }
+
+/* wrapper */
+.shop-container {
+  max-width: 1220px;
+  margin: 28px auto;
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+/* ---------- HERO (bigger, cleaner) ---------- */
+.shop-hero {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:20px;
+  border-radius: calc(var(--radius) + 2px);
+  background: linear-gradient(180deg, rgba(79,70,229,0.05), rgba(59,130,246,0.02));
+  box-shadow: var(--shadow-sm);
+  flex-wrap:wrap;
+}
+.shop-hero .hero-left { min-width: 220px; flex:1; }
+.shop-hero h1 { margin:0; font-size:24px; font-weight:800; line-height:1.05; }
+.shop-hero p { margin:6px 0 0; color:var(--muted); font-size:13px; }
+
+/* optional right hero card container (keeps optional hero card aligned) */
+.shop-hero .hero-right { min-width: 260px; display:flex; justify-content:flex-end; }
+
+/* ---------- CONTROLS ROW ---------- */
+.controls-row {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+
+/* search box */
+.shop-search {
+  min-width:240px;
+  width:100%;
+  max-width:460px;
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid rgba(15,23,42,0.06);
+  background:#fff;
+  box-shadow: 0 10px 28px rgba(59,130,246,0.03);
+  transition: box-shadow .12s ease, transform .08s ease;
+}
+.shop-search:focus { box-shadow: 0 12px 36px rgba(59,130,246,0.08); transform: translateY(-1px); outline: none; }
+
+/* select controls */
+.controls-row select {
+  padding:9px 12px;
+  border-radius:10px;
+  border:1px solid rgba(15,23,42,0.06);
+  background:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.controls-row select:focus { outline: 3px solid rgba(59,130,246,0.10); outline-offset: 2px; }
+
+/* view buttons (pill style) */
+.view-buttons { display:flex; gap:8px; align-items:center; }
+.view-buttons button {
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(15,23,42,0.06);
+  background:#fff;
+  font-weight:800;
+  cursor:pointer;
+  transition: transform .08s ease, box-shadow .12s ease;
+}
+.view-buttons button:hover { transform: translateY(-2px); }
+.view-buttons button.active {
+  background: var(--accent-grad);
+  color:#fff;
+  box-shadow: 0 12px 32px rgba(59,130,246,0.12);
+}
+.view-buttons button:focus { outline: 3px solid rgba(79,70,229,0.12); outline-offset: 3px; }
+
+/* items-per-page select style (condensed) */
+.controls-row .items-per-page {
+  padding:8px 10px; border-radius:8px; border:1px solid rgba(15,23,42,0.05); background:#fff; font-weight:700;
+}
+
+/* ---------- PRODUCT LIST GRID (auto-fit minmax) ---------- */
+/* Use tighter gap and min card width to show more on desktop but remain responsive */
+.product-list.masonry,
+.product-list.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--gap);
+  margin-top: 18px;
+  align-items: start; /* top align so cards stack cleanly */
+  /* no grid-auto-rows here — we leave vertical sizing to card CSS to avoid conflicts */
+}
+
+/* list view: single-column rows */
+.product-list.list {
+  display:flex;
+  flex-direction:column;
+  gap: var(--gap);
+  margin-top: 18px;
+}
+
+/* ensure direct children stretch to column width */
+.product-list.masonry > *, .product-list.grid > * { width:100%; box-sizing:border-box; }
+
+/* ---------- PAGINATION (centered) ---------- */
+.pagination {
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin:26px 0;
+}
+.page-btn {
+  min-width:44px;
+  height:44px;
+  border-radius:10px;
+  border:1px solid rgba(15,23,42,0.06);
+  background:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+.page-btn:focus { outline: 3px solid rgba(59,130,246,0.10); outline-offset:2px; }
+.page-btn.active { background: var(--accent-grad); color:#fff; }
+
+/* ---------- SKELETON (match grid) ---------- */
+.skeleton-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: var(--gap);
+  margin-top:18px;
+}
+.skeleton-item {
+  height: 340px;
+  border-radius:12px;
+  background: linear-gradient(90deg,#eef4ff,#f8fbff,#eef4ff);
+  background-size:200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer { 0%{ background-position:200% 0 } 100%{ background-position:-200% 0 } }
+
+/* ---------- RESPONSIVE TWEAKS ---------- */
+@media (max-width: 1100px) {
+  .product-list.masonry, .product-list.grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .shop-hero { gap:14px; }
+}
+@media (max-width: 700px) {
+  .shop-container { padding:16px; }
+  .product-list.masonry, .product-list.grid { grid-template-columns: 1fr; }
+  .controls-row { gap:10px; }
+  .shop-hero h1 { font-size:20px; }
+}
+
+/* small utility classes */
+.muted { color:var(--muted); font-size:13px; }
+.center { text-align:center; }
+.hidden { display:none !important; }

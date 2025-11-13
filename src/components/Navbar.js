@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { CartContext } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +10,8 @@ const Navbar = () => {
   const { cart } = useContext(CartContext);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  const totalQty = cart.reduce((t, p) => t + (p.quantity || 1), 0);
 
   const menuItems = [
     { name: "Men", categories: ["T-Shirts", "Shirts", "Jeans", "Shoes", "Accessories"] },
@@ -33,11 +34,12 @@ const Navbar = () => {
         <ul className={`nav-menu ${menuOpen ? "open" : ""}`}>
           {menuItems.map((item, idx) => (
             <li key={idx}
-                onMouseEnter={() => setActiveMenu(idx)}
-                onMouseLeave={() => setActiveMenu(null)}
-                onClick={() => setActiveMenu(activeMenu === idx ? null : idx)}
+              onMouseEnter={() => setActiveMenu(idx)}
+              onMouseLeave={() => setActiveMenu(null)}
+              onClick={() => setActiveMenu(activeMenu === idx ? null : idx)}
             >
               {item.name}
+
               <AnimatePresence>
                 {(activeMenu === idx || menuOpen) && (
                   <motion.div
@@ -48,7 +50,10 @@ const Navbar = () => {
                     transition={{ duration: 0.25 }}
                   >
                     {item.categories.map((cat, i) => (
-                      <Link key={i} to={`/${item.name.toLowerCase()}/${cat.toLowerCase()}`}>
+                      <Link
+                        key={i}
+                        to={`/${item.name.toLowerCase()}/${cat.toLowerCase()}`}
+                      >
                         {cat}
                       </Link>
                     ))}
@@ -60,18 +65,29 @@ const Navbar = () => {
         </ul>
 
         <div className="right-section">
-          <form onSubmit={(e) => { e.preventDefault(); const q = search.trim(); navigate(q ? `/?q=${encodeURIComponent(q)}` : '/'); }}>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search products..." className="search-input" />
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const q = search.trim();
+            navigate(q ? `/?q=${encodeURIComponent(q)}` : "/");
+          }}>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              type="text"
+              placeholder="Search products..."
+              className="search-input"
+            />
           </form>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            style={{ cursor: "pointer", fontWeight: "500" }}
-          >
-            <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>🛒 {cart.length}</Link>
+
+          {/* CART BADGE SHOWING TOTAL QUANTITY */}
+          <motion.div whileHover={{ scale: 1.1 }} style={{ cursor: "pointer", fontWeight: "500" }}>
+            <Link to="/cart" style={{ textDecoration: "none", color: "inherit" }}>
+              🛒 {totalQty}
+            </Link>
           </motion.div>
         </div>
       </nav>
-      {/* Full-page mega panel - appears when activeMenu is not null */}
+
       <AnimatePresence>
         {activeMenu !== null && (
           <motion.div
@@ -88,7 +104,11 @@ const Navbar = () => {
                 <h4>{menuItems[activeMenu].name}</h4>
                 <div className="mega-columns">
                   {menuItems[activeMenu].categories.map((cat, i) => (
-                    <Link key={i} to={`/${menuItems[activeMenu].name.toLowerCase()}/${cat.toLowerCase()}`} onClick={() => setMenuOpen(false)}>
+                    <Link
+                      key={i}
+                      to={`/${menuItems[activeMenu].name.toLowerCase()}/${cat.toLowerCase()}`}
+                      onClick={() => setMenuOpen(false)}
+                    >
                       {cat}
                     </Link>
                   ))}
@@ -99,7 +119,13 @@ const Navbar = () => {
                 <div className="mega-hero-content">
                   <h3>Shop the best of {menuItems[activeMenu].name}</h3>
                   <p>Curated picks and seasonal favorites — hand-selected for you.</p>
-                  <Link to={`/${menuItems[activeMenu].name.toLowerCase()}`} className="mega-cta" onClick={() => setMenuOpen(false)}>Explore {menuItems[activeMenu].name}</Link>
+                  <Link
+                    to={`/${menuItems[activeMenu].name.toLowerCase()}`}
+                    className="mega-cta"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Explore {menuItems[activeMenu].name}
+                  </Link>
                 </div>
               </div>
             </div>

@@ -12,6 +12,7 @@ const Grid = styled.div`
   padding: 50px 20px;
 `;
 
+
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();

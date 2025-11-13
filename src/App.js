@@ -8,14 +8,17 @@ import SurpriseButton from "./components/SurpriseButton";
 import WhatsAppChat from "./components/WhatsAppChat";
 import { CartProvider } from "./context/CartContext";
 
-// NEW home hero + existing home sections
+// New hero component
+import HeroPromo from "./components/HeroPromo";
+
+// existing home sections
 import HeroSlider from "./components/HeroSlider";
 import FeaturedProducts from "./components/FeaturedProducts";
 import ProductList from "./components/ProductList";
 import ShopYourFavorites from "./components/ShopYourFavorites";
 import TopDeals from "./components/TopDeals";
 import FurnitureDeals from "./components/FurnitureDeals";
-import ProductSlider from "./components/ProductSlider"; // from old app (kept)
+import ProductSlider from "./components/ProductSlider";
 
 // Product & category pages (old app)
 import ProductDetail from "./components/ProductDetail";
@@ -34,9 +37,14 @@ import TravelSearch from "./pages/TravelSearch";
 import ThankYouPage from "./pages/ThankYouPage";
 import ProductListPage from "./pages/ProductListPage";
 
-// Slick CSS (needed for ProductSlider)
+// Slick CSS (if used)
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
+// at top imports
+import HeroPromoAdvanced from "./components/HeroPromoAdvanced";
+import ShopPage from "./pages/ShopPage";
+import WishlistPage from "./pages/WishlistPage";
 
 function App() {
   return (
@@ -49,21 +57,36 @@ function App() {
             path="/"
             element={
               <>
-                {/* New hero. If HeroSlider CTA goes to /travel, it still works */}
+                {/* Promo hero at top */}
+                <HeroPromo
+                  qrData="https://your-app-link.example.com"
+                  headline={"Smart Shopping\nTrusted by Millions"}
+                  sub="Upto 35% OFF on 1st app order"
+                  ctaText="Shop Now"
+                  onCTAClick={() => { window.location.hash = "#/shop"; }}
+                />
+                {/* <HeroPromoAdvanced
+                  headline={"Shop Smarter\nSave More"}
+                  sub={"App-only: extra 20% OFF"}
+                  ctaText={"Shop Now"}
+                  qrData={"https://your-store.example.com/promo"}
+                  logoSrc={"/images/brand-logo-small.png"}
+                /> */}
+
+                {/* Optional existing hero */}
                 <HeroSlider />
+
                 <FeaturedProducts />
                 <ProductList />
                 <ShopYourFavorites />
                 <TopDeals />
                 <FurnitureDeals />
-                {/* Keep ProductSlider from old app (optional; remove if not needed) */}
                 <ProductSlider />
-                {/* <FAQ /> // if you want it back later */}
               </>
             }
           />
 
-          {/* Product & Category routes (old) */}
+          {/* Product & Category routes */}
           <Route path="/men" element={<MenPage />} />
           <Route path="/men/t-shirts" element={<TShirtsPage />} />
           <Route path="/men/jeans" element={<JeansPage />} />
@@ -71,16 +94,18 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/plp" element={<ProductListPage />} />
 
-          {/* Cart / Checkout (old) */}
+          {/* Cart / Checkout */}
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
 
-          {/* Travel flow (new) */}
+          {/* Travel */}
           <Route path="/travel" element={<TravelHome />} />
           <Route path="/travel/search" element={<TravelSearch />} />
 
           {/* Shared */}
           <Route path="/thank-you" element={<ThankYouPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
         </Routes>
 
         <Footer />
