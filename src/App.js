@@ -58,29 +58,13 @@ function App() {
             element={
               <>
                 {/* Promo hero at top */}
-                <HeroPromo
-                  qrData="https://your-app-link.example.com"
-                  headline={"Smart Shopping\nTrusted by Millions"}
-                  sub="Upto 35% OFF on 1st app order"
-                  ctaText="Shop Now"
-                  onCTAClick={() => { window.location.hash = "#/shop"; }}
-                />
-                {/* <HeroPromoAdvanced
-                  headline={"Shop Smarter\nSave More"}
-                  sub={"App-only: extra 20% OFF"}
-                  ctaText={"Shop Now"}
-                  qrData={"https://your-store.example.com/promo"}
-                  logoSrc={"/images/brand-logo-small.png"}
-                /> */}
-
-                {/* Optional existing hero */}
+                <HeroPromo qrData="https://your-app-link.example.com" headline={"Smart Shopping\nTrusted by Millions"} sub="Upto 35% OFF on 1st app order" ctaText="Shop Now" onCTAClick={() => { window.location.hash = "#/shop"; }}/>
                 <HeroSlider />
-
                 <FeaturedProducts />
                 <ProductList />
-                <ShopYourFavorites />
                 <TopDeals />
                 <FurnitureDeals />
+                <ShopYourFavorites />
                 <ProductSlider />
               </>
             }
