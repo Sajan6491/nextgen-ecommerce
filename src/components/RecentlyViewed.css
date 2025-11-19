@@ -1,0 +1,142 @@
+/* RecentlyViewed creative UI & slider styling */
+
+.rv-wrap {
+  background: linear-gradient(180deg,#f7f8fa 0%, #ffffff 100%);
+  padding: 20px 4%;
+  box-sizing: border-box;
+}
+
+.rv-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* header */
+.rv-header {
+  display:flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+.rv-header h3 {
+  font-size: 20px;
+  margin: 0;
+  color: #0f1724;
+}
+.rv-sub {
+  color: #6b7280;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Swiper wrapper */
+.rv-swiper {
+  padding: 6px 0 18px;
+}
+
+/* card */
+.rv-card {
+  display:flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+  height: 100%;
+}
+
+.rv-card:hover { transform: translateY(-6px); transition: transform .18s ease; }
+
+/* small badge top-left */
+.rv-badge {
+  position: absolute;
+  margin-top: -6px;
+  margin-left: -6px;
+  font-size: 12px;
+  background: linear-gradient(90deg,#ff7a7a,#ffb86b);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 20px;
+  z-index: 2;
+  display: none; /* show only if badge text exists */
+}
+
+/* image */
+.rv-img {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height: 140px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fafafa;
+  margin-bottom: 8px;
+}
+.rv-img img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* info */
+.rv-info {
+  padding: 4px 2px 8px;
+}
+
+.rv-title {
+  font-size: 13px;
+  color: #111827;
+  line-height: 1.2;
+  height: 36px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.rv-price-row {
+  display:flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rv-price {
+  color: #0b74de;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.rv-old {
+  font-size: 12px;
+  color:#9ca3af;
+  text-decoration: line-through;
+}
+
+/* Navigation arrows built-in by Swiper; style them */
+.rv-swiper .swiper-button-next,
+.rv-swiper .swiper-button-prev {
+  color: #374151;
+  background: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+}
+.rv-swiper .swiper-button-next::after,
+.rv-swiper .swiper-button-prev::after {
+  font-size: 18px;
+}
+
+/* make badge visible when text present */
+.rv-card .rv-badge:empty { display: none; }
+.rv-card .rv-badge:not(:empty) { display: inline-block; position: absolute; top: 8px; left: 8px; }
+
+/* responsive tweaks */
+@media (max-width: 1024px) {
+  .rv-img { height: 120px; }
+}
+@media (max-width: 640px) {
+  .rv-inner { padding: 0 6px; }
+  .rv-header h3 { font-size: 18px; }
+  .rv-price { font-size: 13px; }
+}

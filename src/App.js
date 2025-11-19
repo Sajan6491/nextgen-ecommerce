@@ -45,6 +45,7 @@ import "slick-carousel/slick/slick-theme.css";
 import HeroPromoAdvanced from "./components/HeroPromoAdvanced";
 import ShopPage from "./pages/ShopPage";
 import WishlistPage from "./pages/WishlistPage";
+import RecentlyViewed from "./components/RecentlyViewed";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
                 <FurnitureDeals />
                 <ShopYourFavorites />
                 <ProductSlider />
+                            <RecentlyViewed />  
               </>
             }
           />
