@@ -1,136 +1,153 @@
-.favorites-section {
-  padding: 80px 8%;
-  background: #fff;
+/* SECTION */
+.fav2025-section {
+  padding: 80px 6%;
+  background: linear-gradient(180deg, #f8fafc, #ffffff);
   font-family: "Poppins", sans-serif;
+}
+
+/* HEADER */
+.fav2025-header {
   text-align: center;
+  margin-bottom: 50px;
 }
 
-.favorites-header h2 {
-  font-size: 2.5rem;
+.fav2025-header h2 {
+  font-size: 2.4rem;
   font-weight: 700;
-  color: #222;
-  margin-bottom: 8px;
+  color: #0f172a;
 }
 
-.favorites-header p {
-  color: #666;
-  font-size: 1rem;
-  margin-bottom: 40px;
+.fav2025-header p {
+  color: #475569;
+  font-size: 1.05rem;
 }
 
-.favorites-grid {
+/* GRID */
+.fav2025-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 35px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 38px;
 }
 
-.favorite-item {
-  background: #f9f9f9;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+/* CARD */
+.fav2025-card {
+  border-radius: 18px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  max-width: 300px;
-}
-
-.favorite-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.fav-img-container {
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+  transition: 0.28s ease;
   position: relative;
-  width: 100%;
+}
+
+.fav2025-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.14);
+}
+
+/* IMAGE BOX */
+.fav2025-imgBox {
+  position: relative;
   height: 250px;
   overflow: hidden;
 }
 
-.fav-img-container img {
+.fav2025-imgBox img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: 0.4s ease;
 }
 
-.favorite-item:hover img {
+.fav2025-card:hover img {
   transform: scale(1.1);
 }
 
-.fav-heart {
+/* HEART ICON */
+.fav2025-heart {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  color: #999;
+  width: 45px;
+  height: 45px;
   font-size: 1.5rem;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  transition: 0.3s ease;
+  color: #475569;
+  z-index: 25;
 }
 
-.fav-heart:hover {
-  background: #ff3366;
-  color: white;
+.fav2025-heart:hover,
+.fav2025-heart.active {
+  background: #ef4444;
+  color: #fff;
 }
 
-.fav-heart.active {
-  background: #ff3366;
-  color: white;
+/* INFO */
+.fav2025-info {
+  padding: 18px;
 }
 
-.fav-details {
-  padding: 20px;
-}
-
-.fav-details h3 {
+.fav2025-info h3 {
   font-size: 1.1rem;
-  color: #222;
   font-weight: 600;
-  margin-bottom: 8px;
+  color: #0f172a;
+  margin-bottom: 6px;
 }
 
-.price {
-  color: #007bff;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-.fav-btn {
-  padding: 10px 25px;
-  border: none;
-  background: #007bff;
-  color: white;
-  font-weight: 500;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.fav-btn:hover {
-  background: #0056b3;
-}
-
-.show-more-container {
-  margin-top: 40px;
-}
-
-.show-more-btn {
-  padding: 12px 35px;
-  border: none;
-  background: #222;
-  color: white;
+.fav2025-price {
   font-size: 1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  font-weight: 700;
+  color: #0b74de;
 }
 
-.show-more-btn:hover {
+/* ADD TO CART */
+.fav2025-add {
+  width: 85%;
+  margin: 14px auto 20px;
+  display: block;
+  padding: 10px 20px;
+  border: none;
+  background: #0b74de;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.fav2025-add:hover {
+  background: #095fb6;
+  transform: translateY(-2px);
+}
+
+/* LINK FIX */
+.fav2025-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* SHOW MORE */
+.fav2025-more {
+  text-align: center;
+  margin-top: 45px;
+}
+
+.fav2025-more-btn {
+  padding: 12px 36px;
+  border: none;
+  border-radius: 30px;
+  background: #0f172a;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.fav2025-more-btn:hover {
   background: #000;
   transform: scale(1.05);
 }
