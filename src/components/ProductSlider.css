@@ -131,10 +131,13 @@
   overflow: hidden;
   line-height: 1.15;
 }
+
+/* Footer */
 .ps-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 12px;
   margin-top: auto;
 }
 .ps-price {
@@ -201,3 +204,24 @@
 
 /* defensive: prevent horizontal overflow from slider */
 .ps-outer.header-arrows { overflow-x: hidden; }
+
+/* FIX — ensure Add to Cart button is clickable */
+.ps-footer {
+  position: relative;
+  z-index: 5;
+}
+
+.ps-add {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto !important;
+}
+
+/* FIX — prevent link from covering whole card */
+.ps-card-link {
+  display: block;
+  pointer-events: auto;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
