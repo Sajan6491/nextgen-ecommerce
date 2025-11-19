@@ -1,5 +1,4 @@
-// src/components/RecentlyViewed.jsx
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -11,10 +10,8 @@ const STORAGE_KEY = "recently_viewed_v1";
 
 export default function RecentlyViewed({ max = 12 }) {
   const [items, setItems] = useState([]);
-  const mountedRef = useRef(false);
 
   useEffect(() => {
-    mountedRef.current = true;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
@@ -22,15 +19,14 @@ export default function RecentlyViewed({ max = 12 }) {
       if (!Array.isArray(parsed)) return;
       setItems(parsed.slice(0, max));
     } catch (e) {
-      console.error("RecentlyViewed: parse error", e);
+      console.error("RecentlyViewed parse error", e);
     }
-    return () => (mountedRef.current = false);
   }, [max]);
 
   if (!items || items.length === 0) return null;
 
-  // fallback small image
-  const fallback = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><rect fill='%23f6f7f8' width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='Arial' font-size='14'>No Image</text></svg>";
+  const fallback =
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><rect fill='%23f6f7f8' width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='Arial' font-size='14'>No Image</text></svg>";
 
   return (
     <section className="rv-wrap">
@@ -61,7 +57,7 @@ export default function RecentlyViewed({ max = 12 }) {
                 <div className="rv-badge">{p.badge || ""}</div>
 
                 <div className="rv-img">
-                  <img src={p.image || fallback} alt={p.title || "Product"} onError={(e)=>{e.target.src=fallback}} />
+                  <img src={p.image || fallback} alt={p.title || "Product"} onError={(e) => (e.target.src = fallback)} />
                 </div>
 
                 <div className="rv-info">

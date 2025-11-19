@@ -13,3 +13,15 @@ code {
 }
 
 
+/* Global fix: prevent page horizontal scroll (safe) */
+html, body, #root {
+  overflow-x: hidden;
+}
+
+/* Swiper container defensive styles to avoid overflow */
+.rv-wrap, .rv-inner, .rv-swiper {
+  overflow-x: hidden !important;
+}
+.swiper-wrapper {
+  overflow: visible !important;
+}

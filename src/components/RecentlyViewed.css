@@ -1,5 +1,3 @@
-/* RecentlyViewed creative UI & slider styling */
-
 .rv-wrap {
   background: linear-gradient(180deg,#f7f8fa 0%, #ffffff 100%);
   padding: 20px 4%;
@@ -11,7 +9,6 @@
   margin: 0 auto;
 }
 
-/* header */
 .rv-header {
   display:flex;
   justify-content: space-between;
@@ -49,7 +46,6 @@
 
 .rv-card:hover { transform: translateY(-6px); transition: transform .18s ease; }
 
-/* small badge top-left */
 .rv-badge {
   position: absolute;
   margin-top: -6px;
@@ -60,10 +56,9 @@
   padding: 6px 10px;
   border-radius: 20px;
   z-index: 2;
-  display: none; /* show only if badge text exists */
+  display: none;
 }
 
-/* image */
 .rv-img {
   display:flex;
   align-items:center;
@@ -80,7 +75,6 @@
   object-fit: contain;
 }
 
-/* info */
 .rv-info {
   padding: 4px 2px 8px;
 }
@@ -112,7 +106,7 @@
   text-decoration: line-through;
 }
 
-/* Navigation arrows built-in by Swiper; style them */
+/* Swiper arrows styling */
 .rv-swiper .swiper-button-next,
 .rv-swiper .swiper-button-prev {
   color: #374151;
@@ -127,7 +121,7 @@
   font-size: 18px;
 }
 
-/* make badge visible when text present */
+/* show badge only when not empty */
 .rv-card .rv-badge:empty { display: none; }
 .rv-card .rv-badge:not(:empty) { display: inline-block; position: absolute; top: 8px; left: 8px; }
 

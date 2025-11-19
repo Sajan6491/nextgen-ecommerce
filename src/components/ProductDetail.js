@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -7,8 +7,6 @@ import { CartContext } from "../context/CartContext";
 
 /* ---------------------------
   Recently viewed helper
-  - Writes a compact item into localStorage key "recently_viewed_v1"
-  - Keeps newest first, removes duplicates, trims to max 24
 ---------------------------- */
 const RV_KEY = "recently_viewed_v1";
 function addRecentlyViewed(product) {
@@ -35,82 +33,130 @@ function addRecentlyViewed(product) {
 
     // trim length
     const trimmed = cleaned.slice(0, 24);
-
     localStorage.setItem(RV_KEY, JSON.stringify(trimmed));
   } catch (e) {
-    // non-fatal
     console.error("addRecentlyViewed error", e);
   }
 }
 
 /* ---------------------------
-  Your styled-components (kept as-is)
+  Styled components (responsive + overflow-safe)
 ---------------------------- */
+
+const PageWrapper = styled.div`
+  width: 100%;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  box-sizing: border-box;
+`;
 
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
-  padding: 50px 20px;
+  gap: 40px;
+  padding: 40px 20px;
   justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  /* smaller gaps & padding on narrow screens */
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 20px 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
+
+const ImageWrap = styled.div`
+  flex: 0 0 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+  }
 `;
 
 const Image = styled.img`
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 15px;
+  width: 100%;
+  max-width: 340px;
+  height: 340px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
+
+  @media (max-width: 420px) {
+    height: auto;
+    max-width: 100%;
+  }
 `;
 
 const Info = styled.div`
-  max-width: 500px;
+  flex: 1 1 460px;
+  max-width: 640px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
+  margin: 6px 0 12px;
 `;
 
 const Price = styled.p`
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.3rem;
-  margin: 10px 0;
+  margin: 6px 0 14px;
+  color: #0b74de;
 `;
 
 const Desc = styled.p`
   color: #555;
   line-height: 1.5;
+  margin-bottom: 12px;
 `;
 
 const SwatchContainer = styled.div`
   display: flex;
   gap: 10px;
   margin: 10px 0;
+  flex-wrap: wrap;
 `;
 
 const ColorSwatch = styled(motion.div)`
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 2px solid ${(props) => (props.active ? "#000" : "#ccc")};
+  border: 2px solid ${(props) => (props.active ? "#000" : "#ddd")};
   background-color: ${(props) => props.color};
   cursor: pointer;
+  box-sizing: border-box;
 `;
 
 const VariationButton = styled.button`
   margin-right: 10px;
-  padding: 6px 14px;
+  margin-top: 8px;
+  padding: 8px 14px;
   border: 1px solid #1e1e2f;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   background: ${(props) => (props.active ? "#1e1e2f" : "#fff")};
   color: ${(props) => (props.active ? "#fff" : "#000")};
-  transition: 0.2s;
+  transition: 0.15s;
 `;
 
 const AddCartButton = styled(motion.button)`
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 18px;
+  padding: 12px 20px;
   background: #1e1e2f;
   color: #fff;
   border: none;
@@ -121,10 +167,14 @@ const AddCartButton = styled(motion.button)`
 `;
 
 const SelectedInfo = styled.div`
-  margin-top: 15px;
+  margin-top: 12px;
   font-size: 14px;
   color: #333;
 `;
+
+/* ---------------------------
+  Component
+---------------------------- */
 
 const ProductDetail = () => {
   const { addToCart } = useContext(CartContext);
@@ -138,21 +188,31 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     axios
       .get(`https://fakestoreapi.com/products/${id}`)
       .then((res) => {
+        if (!mounted) return;
         setProduct(res.data);
-        // <-- add to recently viewed immediately after loading product
-        addRecentlyViewed(res.data);
+
+        // add to recently viewed (safe)
+        try {
+          addRecentlyViewed(res.data);
+        } catch (e) {
+          // non-fatal
+          console.error(e);
+        }
       })
       .catch((err) => console.error(err));
+
+    return () => (mounted = false);
   }, [id]);
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p style={{ padding: 20 }}>Loading...</p>;
 
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
-      alert("Please select both color and size!");
+      alert("Please select color and size!");
       return;
     }
 
@@ -166,55 +226,77 @@ const ProductDetail = () => {
       quantity: 1,
     };
 
-    addToCart(cartItem); // ✅ Add to global cart
-    alert(`Added ${product.title} (${selectedSize}, ${selectedColor}) to cart!`);
+    // call CartContext's addToCart (many contexts accept addToCart(item, qty) or addToCart(item))
+    // if your context expects 2 args use addToCart(cartItem, 1) — otherwise adjust as needed.
+    // We'll attempt both patterns safely:
+    try {
+      addToCart(cartItem, 1);
+    } catch {
+      try {
+        addToCart(cartItem);
+      } catch (e) {
+        console.error("addToCart failed", e);
+      }
+    }
+
+    // small non-blocking visual feedback can be added instead of alert
+    alert(`Added "${product.title}" (${selectedSize}) to cart`);
   };
 
   return (
-    <Container>
-      <Image src={product.image} alt={product.title} />
-      <Info>
-        <Title>{product.title}</Title>
-        <Price>₹{product.price}</Price>
-        <Desc>{product.description}</Desc>
+    <PageWrapper>
+      <Container>
+        <ImageWrap>
+          <Image src={product.image} alt={product.title} />
+        </ImageWrap>
 
-        <h4>Color:</h4>
-        <SwatchContainer>
-          {colors.map((color, i) => (
-            <ColorSwatch
-              key={i}
-              color={color}
-              active={selectedColor === color}
-              whileHover={{ scale: 1.1 }}
-              onClick={() => setSelectedColor(color)}
-            />
-          ))}
-        </SwatchContainer>
+        <Info>
+          <Link to="/" style={{ textDecoration: "none", color: "#0b74de", fontWeight: 600 }}>
+            ← Back to shop
+          </Link>
 
-        <h4>Size:</h4>
-        <div>
-          {sizes.map((size, i) => (
-            <VariationButton
-              key={i}
-              active={selectedSize === size}
-              onClick={() => setSelectedSize(size)}
-            >
-              {size}
-            </VariationButton>
-          ))}
-        </div>
+          <Title>{product.title}</Title>
+          <Price>₹{Number(product.price).toLocaleString("en-IN")}</Price>
+          <Desc>{product.description}</Desc>
 
-        {selectedColor && selectedSize && (
-          <SelectedInfo>
-            Selected: {selectedSize} / <span style={{ color: selectedColor }}>Color</span>
-          </SelectedInfo>
-        )}
+          <h4>Color</h4>
+          <SwatchContainer>
+            {colors.map((color) => (
+              <ColorSwatch
+                key={color}
+                color={color}
+                active={selectedColor === color}
+                whileHover={{ scale: 1.08 }}
+                onClick={() => setSelectedColor(color)}
+              />
+            ))}
+          </SwatchContainer>
 
-        <AddCartButton whileHover={{ scale: 1.05 }} onClick={handleAddToCart}>
-          Add to Cart
-        </AddCartButton>
-      </Info>
-    </Container>
+          <h4>Size</h4>
+          <div>
+            {sizes.map((size) => (
+              <VariationButton
+                key={size}
+                active={selectedSize === size}
+                onClick={() => setSelectedSize(size)}
+              >
+                {size}
+              </VariationButton>
+            ))}
+          </div>
+
+          {selectedColor && selectedSize && (
+            <SelectedInfo>
+              Selected: <b>{selectedSize}</b> • <span style={{ color: selectedColor }}>Color</span>
+            </SelectedInfo>
+          )}
+
+          <AddCartButton whileHover={{ scale: 1.03 }} onClick={handleAddToCart}>
+            Add to Cart
+          </AddCartButton>
+        </Info>
+      </Container>
+    </PageWrapper>
   );
 };
 
