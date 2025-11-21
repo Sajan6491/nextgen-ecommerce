@@ -584,7 +584,7 @@ export default function ProductDetail() {
       {/* sticky CTA */}
       {showSticky && (
         <div className="pd-sticky">
-          <div className="pd-sticky-info">
+          <div className="pd-sticky-info"> 
             <div style={{ fontWeight: 700 }}>{product.title}</div>
             <div style={{ color: "#6b7280" }}>₹{discountedPrice.toLocaleString()}</div>
           </div>
