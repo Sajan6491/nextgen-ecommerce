@@ -527,7 +527,7 @@ export default function ProductDetail() {
             </form>
 
             {/* list */}
-            <div className="pd-review-list">
+            <div className="pd-review-list">    
               {displayedReviews.length === 0 && <div className="pd-no-reviews">No reviews yet.</div>}
               {displayedReviews.map(r => (
                 <div key={r.id} className="pd-review">
