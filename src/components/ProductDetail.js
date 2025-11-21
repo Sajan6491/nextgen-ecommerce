@@ -1,5 +1,5 @@
 // src/components/ProductDetail.jsx
-import React, { useEffect, useState, useContext, useRef, useMemo } from "react";
+import React, { useEffect, useState, useContext, useRef, useMemo, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +8,7 @@ import PRODUCTS from "../data/products";
 import "./ProductDetail.css";
 
 /* -------------------------
-   LocalStorage keys & helpers (unchanged)
+   LocalStorage keys & helpers
 --------------------------*/
 const RV_KEY = "recently_viewed_v1";
 const REVIEWS_KEY = "product_reviews_v1";
@@ -42,7 +42,7 @@ function readWishlist() { return safeParse(localStorage.getItem(WISH_KEY), []); 
 function saveWishlist(list) { try { localStorage.setItem(WISH_KEY, JSON.stringify(list)); } catch (e) { } }
 
 /* -------------------------
-   Utilities (unchanged)
+   Utilities
 --------------------------*/
 function normalizeImages(prod) {
   if (!prod) return [];
@@ -52,7 +52,6 @@ function normalizeImages(prod) {
   return [base, base + "?v=1", base + "?v=2"];
 }
 
-/* debounce helper used for pincode check */
 function debounce(fn, wait = 350) {
   let t;
   return (...args) => {
@@ -62,14 +61,56 @@ function debounce(fn, wait = 350) {
 }
 
 /* -------------------------
-   Component (your original code + added features)
+   Small UI components (top-level so hooks are allowed)
+--------------------------*/
+function Countdown({ endAt }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const ms = Math.max(0, new Date(endAt).getTime() - now);
+  if (ms <= 0) return null;
+  const days = Math.floor(ms / (1000*60*60*24));
+  const hrs = Math.floor((ms % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((ms % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((ms % (1000*60)) / 1000);
+  return <div className="pd-countdown">Limited offer: {days}d {hrs}h {mins}m {secs}s</div>;
+}
+
+function ZoomModal({ thumbs = [], index = 0, onClose = ()=>{}, onPrev = ()=>{}, onNext = ()=>{} }) {
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onPrev();
+      if (e.key === "ArrowRight") onNext();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, onPrev, onNext]);
+
+  if (!thumbs || thumbs.length === 0) return null;
+  return (
+    <AnimatePresence>
+      <motion.div className="pd-zoom-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+        <div className="pd-zoom-inner" onClick={e => e.stopPropagation()}>
+          <button aria-label="Close" className="pd-zoom-close" onClick={onClose}>✕</button>
+          <button aria-label="Prev" className="pd-zoom-prev" onClick={onPrev}>‹</button>
+          <img className="pd-zoom-img" src={thumbs[index]} alt="Zoom" />
+          <button aria-label="Next" className="pd-zoom-next" onClick={onNext}>›</button>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+/* -------------------------
+   Main component
 --------------------------*/
 export default function ProductDetail() {
-  // router + context
   const { id: rawId } = useParams();
   const { addToCart } = useContext(CartContext);
 
-  /* ========== Hooks ========== (kept your state) */
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -105,21 +146,16 @@ export default function ProductDetail() {
   const [zoomIndex, setZoomIndex] = useState(0);
 
   const [showSticky, setShowSticky] = useState(false);
-
-  // size chart modal
   const [sizeChartOpen, setSizeChartOpen] = useState(false);
 
-  /* undoable last review id (for undo) */
   const lastReviewRef = useRef(null);
 
-  /* Derived product id */
   const productId = useMemo(() => {
     if (!rawId) return null;
     const m = String(rawId).match(/(\d+)$/);
     return m ? m[1] : rawId;
   }, [rawId]);
 
-  /* ========== Load product ========== (kept your behavior) */
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -138,7 +174,6 @@ export default function ProductDetail() {
             addRecentlyViewed(local);
             setReviews(readReviews(productId));
             setLoading(false);
-            // Analytics event: product view
             window.dataLayer?.push?.({ event: "product_view", productId: local.id, productTitle: local.title });
             window.dispatchEvent(new CustomEvent("product-view", { detail: { id: local.id } }));
             return;
@@ -181,7 +216,6 @@ export default function ProductDetail() {
     return () => { mounted = false; };
   }, [productId]);
 
-  /* reset selections on product change */
   useEffect(() => {
     setSelectedColor(null);
     setSelectedSize(null);
@@ -191,7 +225,6 @@ export default function ProductDetail() {
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch {}
   }, [productId]);
 
-  /* sticky on scroll */
   useEffect(() => {
     const onScroll = () => setShowSticky((window.scrollY || 0) > 420);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -199,7 +232,6 @@ export default function ProductDetail() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* zoom keyboard nav */
   useEffect(() => {
     if (!zoomOpen) return;
     const onKey = e => {
@@ -211,12 +243,10 @@ export default function ProductDetail() {
     return () => window.removeEventListener("keydown", onKey);
   }, [zoomOpen, thumbs.length]);
 
-  /* ========== helpers & UX goodies ========== */
-  const showToast = (text, type = "ok", ms = 2500, action = null) => {
-    // action: { label, cb }
+  const showToast = useCallback((text, type = "ok", ms = 2500, action = null) => {
     setToast({ text, type, action });
     if (ms > 0) setTimeout(() => setToast(null), ms);
-  };
+  }, []);
 
   const basePrice = Number(product?.price || 0);
   const discountedPrice = appliedCoupon
@@ -227,7 +257,6 @@ export default function ProductDetail() {
 
   const inStock = product?.stock === undefined ? true : Boolean(product.stock > 0);
 
-  /* fly-to-cart microinteraction (keeps your existing implementation) */
   function flyToCart(imgSrc) {
     try {
       const wrapId = "pd-fly-wrap";
@@ -267,7 +296,6 @@ export default function ProductDetail() {
     } catch (e) { console.error(e); }
   }
 
-  /* add to cart handler (with validation & fly) */
   const handleAddToCart = async () => {
     if (adding) return;
     if (!selectedColor || !selectedSize) { showToast("Select color & size", "warn"); return; }
@@ -285,7 +313,6 @@ export default function ProductDetail() {
       try { addToCart(item, qty); } catch { addToCart(item); }
       flyToCart(item.image);
       showToast(`Added ${qty} × ${product.title}`, "ok", 2500, { label: "Undo", cb: () => {
-        // remove 1 qty from cart by dispatching a CustomEvent consumed elsewhere or using context remove function
         window.dispatchEvent(new CustomEvent("undo-add", { detail: { id: product.id } }));
         showToast("Undo requested", "warn", 1500);
       }});
@@ -294,7 +321,6 @@ export default function ProductDetail() {
     }
   };
 
-  /* quick add for related cards (no navigation) */
   const quickAdd = (p) => {
     const item = { id: p.id, title: p.title, price: p.price, image: p.img || p.image || "", quantity: 1 };
     try { addToCart(item, 1); } catch { addToCart(item); }
@@ -331,7 +357,6 @@ export default function ProductDetail() {
     window.open(`https://wa.me/?text=${encodeURIComponent(product.title + " " + window.location.href)}`, "_blank");
   };
 
-  /* reviews */
   useEffect(() => { setReviews(readReviews(productId)); }, [productId]);
 
   const submitReview = (e) => {
@@ -342,22 +367,18 @@ export default function ProductDetail() {
     const rating = Number(reviewForm.rating) || 5;
     if (!name || !text) { showToast("Name & review required", "warn"); return; }
 
-    // Duplicate check
     if (reviews.find(r => r.name === name && r.text === text)) { showToast("Duplicate review detected", "warn"); return; }
 
     setSubmittingReview(true);
     const r = { id: Date.now(), name, rating, text, date: new Date().toISOString() };
     setReviews(prev => [r, ...prev]);
     saveReview(productId, r);
-    // store last review id to allow undo for a short window
     lastReviewRef.current = r.id;
     setReviewForm({ name: "", rating: 5, text: "" });
 
-    // allow undo for 5s
     showToast("Review submitted", "ok", 5000, {
       label: "Undo",
       cb: () => {
-        // Undo: remove review from storage and state
         const all = safeParse(localStorage.getItem(REVIEWS_KEY), {});
         all[String(productId)] = (all[String(productId)] || []).filter(rr => rr.id !== r.id);
         localStorage.setItem(REVIEWS_KEY, JSON.stringify(all));
@@ -381,7 +402,6 @@ export default function ProductDetail() {
     showToast(`Coupon ${code} applied`, "ok");
   };
 
-  /* debounced pincode check to avoid spamming */
   const debouncedCheck = useMemo(() => debounce((pin) => {
     if (!/^\d{5,6}$/.test(pin)) { setDeliveryInfo({ error: "Enter valid pincode" }); return; }
     const days = (parseInt(pin.slice(-1)) % 2 === 0) ? [2,4] : [4,7];
@@ -390,21 +410,16 @@ export default function ProductDetail() {
 
   const checkPincode = () => { debouncedCheck(pincode); };
 
-  /* displayed reviews */
   const displayedReviews = reviews.slice(0, reviewPageSize);
-
-  /* related + recent (kept) */
   const related = PRODUCTS.filter(p => p.category === product?.category && String(p.id) !== String(product?.id)).slice(0, 8);
   const recent = readRecentlyViewed().filter(r => String(r.id) !== String(product?.id)).slice(0, 8);
 
-  /* loading / error guards */
   if (loading) return <div className="pd-loading">Loading...</div>;
   if (error) return <div className="pd-loading">{error}</div>;
   if (!product) return <div className="pd-loading">Product not found.</div>;
 
   const avgRating = reviews.length ? (reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviews.length).toFixed(1) : null;
 
-  /* ---------- JSON-LD product structured data (SEO) ---------- */
   const jsonld = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -421,7 +436,6 @@ export default function ProductDetail() {
     }
   };
 
-  /* ---------- Render ---------- */
   return (
     <div className="pd-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }} />
@@ -434,6 +448,7 @@ export default function ProductDetail() {
 
           <div className="pd-main-image-wrap">
             {product.badge && <div className="pd-badge">{product.badge}</div>}
+            {product.saleEnds && <Countdown endAt={product.saleEnds} />}
             {product.mrp && product.price && product.mrp > product.price && (
               <div className="pd-discount">-{Math.round((product.mrp - product.price)/product.mrp*100)}%</div>
             )}
@@ -459,21 +474,21 @@ export default function ProductDetail() {
                 src={t}
                 alt={`thumb-${i}`}
                 className={`pd-thumb ${t === mainImg ? "active" : ""}`}
-                onClick={() => setMainImg(t)}
+                onClick={() => { setMainImg(t); setZoomIndex(i); }}
                 loading="lazy"
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") setMainImg(t);
+                  if (e.key === "Enter") { setMainImg(t); setZoomIndex(i); }
                   if (e.key === "ArrowLeft") {
                     const prev = Math.max(0, i - 1);
                     const n = thumbs[prev];
-                    if (n) setMainImg(n);
+                    if (n) { setMainImg(n); setZoomIndex(prev); }
                   }
                   if (e.key === "ArrowRight") {
                     const next = Math.min(thumbs.length - 1, i + 1);
                     const n = thumbs[next];
-                    if (n) setMainImg(n);
+                    if (n) { setMainImg(n); setZoomIndex(next); }
                   }
                 }}
               />
@@ -501,23 +516,6 @@ export default function ProductDetail() {
 
           <div className={`pd-stock ${inStock ? "in" : "out"}`}>{inStock ? "In stock" : "Out of stock"}</div>
           <p className="pd-desc">{product.description || product.desc || "No description available."}</p>
-
-          {/* countdown if product.saleEnds provided */}
-          {product.saleEnds && (() => {
-            const end = new Date(product.saleEnds).getTime();
-            const [nowTick, setNowTick] = useState(Date.now());
-            useEffect(() => {
-              const t = setInterval(() => setNowTick(Date.now()), 1000);
-              return () => clearInterval(t);
-            }, []);
-            const remaining = Math.max(0, end - nowTick);
-            const days = Math.floor(remaining / (1000*60*60*24));
-            const hrs = Math.floor((remaining % (1000*60*60*24)) / (1000*60*60));
-            const mins = Math.floor((remaining % (1000*60*60)) / (1000*60));
-            const secs = Math.floor((remaining % (1000*60)) / 1000);
-            if (remaining <= 0) return null;
-            return <div className="pd-countdown">Limited offer: {days}d {hrs}h {mins}m {secs}s</div>;
-          })()}
 
           <div className="pd-variants">
             <div style={{ marginBottom: 8 }}>
@@ -668,18 +666,15 @@ export default function ProductDetail() {
       </AnimatePresence>
 
       {/* Zoom modal */}
-      <AnimatePresence>
-        {zoomOpen && (
-          <motion.div className="pd-zoom-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setZoomOpen(false)}>
-            <div className="pd-zoom-inner" onClick={(e) => e.stopPropagation()}>
-              <button className="pd-zoom-close" onClick={() => setZoomOpen(false)}>✕</button>
-              <button className="pd-zoom-prev" onClick={() => setZoomIndex(i => Math.max(0, i - 1))}>‹</button>
-              <img className="pd-zoom-img" src={thumbs[zoomIndex] || mainImg || product.image || product.img} alt={product.title} />
-              <button className="pd-zoom-next" onClick={() => setZoomIndex(i => Math.min(thumbs.length - 1, i + 1))}>›</button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {zoomOpen && thumbs.length > 0 && (
+        <ZoomModal
+          thumbs={thumbs}
+          index={zoomIndex}
+          onClose={() => setZoomOpen(false)}
+          onPrev={() => setZoomIndex(i => Math.max(0, i - 1))}
+          onNext={() => setZoomIndex(i => Math.min(thumbs.length - 1, i + 1))}
+        />
+      )}
 
       {/* Size chart modal */}
       <AnimatePresence>
