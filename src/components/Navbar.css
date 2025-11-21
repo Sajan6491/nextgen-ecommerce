@@ -116,7 +116,7 @@ nav {
 .right-section {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 32px;
 }
 
 .searchbar {
@@ -329,4 +329,105 @@ body > *:not(header):not(main) {
     visibility: hidden !important;
     opacity: 0 !important;
   }
+}
+/* ---------- Search suggestions (improved) ---------- */
+/* Place this near your other searchbar styles (or at the end of Navbar.css) */
+
+.searchbar {
+  position: relative; /* keeps suggestions positioned beneath the input */
+  z-index: 1600;
+}
+
+/* suggestion container */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 220px;
+  max-width: 640px;           /* prevents absurdly wide lists on very large searchbars */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 6px;
+  z-index: 9999;              /* ensure above mega-panel & header */
+  max-height: 360px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* suggestion item */
+.suggestion-item {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: background 120ms ease;
+}
+
+/* highlight state for hover and keyboard */
+.suggestion-item.is-highlight,
+.suggestion-item:hover {
+  background: rgba(6,7,13,0.06);
+}
+
+/* left thumbnail/avatar */
+.suggestion-left img {
+  width:44px;
+  height:44px;
+  object-fit:cover;
+  border-radius:6px;
+  flex-shrink:0;
+}
+
+.s-avatar {
+  display:inline-flex;
+  width:44px;
+  height:44px;
+  border-radius:6px;
+  align-items:center;
+  justify-content:center;
+  background:#eef2ff;
+  color:#0f1724;
+  font-weight:700;
+  flex-shrink:0;
+}
+
+/* main title and meta */
+.suggestion-main { flex:1; min-width:0; }
+.suggestion-main .s-title {
+  font-size:14px;
+  color:#0f1724;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.suggestion-main .s-sub {
+  font-size:13px;
+  color:#6b7280;
+  margin-top:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* small responsive adjustments */
+@media (max-width: 480px) {
+  .search-suggestions { left: 8px; right: 8px; width: calc(100% - 16px); max-width: none; top: calc(100% + 6px); }
+  .suggestion-left img, .s-avatar { width:40px; height:40px; }
+  .suggestion-item { padding: 8px 6px; gap:8px; }
+}
+/* ensure suggestions accept clicks and always sit above other UI */
+.search-suggestions {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+.suggestion-item {
+  cursor: pointer;
 }

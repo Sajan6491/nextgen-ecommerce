@@ -10,11 +10,10 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpenIndex, setMobileOpenIndex] = useState(null);
-  const [isDesktop, setIsDesktop] = useState(typeof window !== "undefined" ? window.innerWidth > 768 : true);
-  const { cart } = useContext(CartContext);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
   const panelRef = useRef(null);
+  const { cart } = useContext(CartContext);
 
-  // total cart qty
   const totalQty = Array.isArray(cart) ? cart.reduce((t, p) => t + (p.quantity || 1), 0) : 0;
 
   const menuItems = [
@@ -24,15 +23,12 @@ const Navbar = () => {
     { name: "Home & Living", categories: ["Furniture", "Decor", "Kitchen", "Lighting", "Bedding"] },
   ];
 
-  // Resize handler to set desktop/mobile state
   useEffect(() => {
     const onResize = () => {
       const nowDesktop = window.innerWidth > 768;
       setIsDesktop(nowDesktop);
-      // close menus when switching
-      if (!nowDesktop) {
-        setActiveMenu(null);
-      } else {
+      if (!nowDesktop) setActiveMenu(null);
+      else {
         setMenuOpen(false);
         setMobileOpenIndex(null);
       }
@@ -41,20 +37,18 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Escape key to close menus
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
         setMenuOpen(false);
-        setMobileOpenIndex(null);
         setActiveMenu(null);
+        setMobileOpenIndex(null);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside mobile panel to close
   useEffect(() => {
     if (!menuOpen) return;
     const onClick = (e) => {
@@ -66,11 +60,11 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", onClick);
   }, [menuOpen]);
 
-  // Ensure no leftover hide classes (safe)
+  // defensive cleanup in case of stale classes
   useEffect(() => {
     document.body.classList.remove("hide-nav");
-    const h = document.querySelector("header");
-    if (h) h.classList.remove("nav-hidden");
+    const hdr = document.querySelector("header");
+    if (hdr) hdr.classList.remove("nav-hidden");
   }, []);
 
   return (
@@ -110,7 +104,7 @@ const Navbar = () => {
                   {item.name}
                 </button>
 
-                {/* desktop small per-item dropdown */}
+                {/* desktop per-item small dropdown */}
                 <AnimatePresence>
                   {isDesktop && activeMenu === idx && (
                     <motion.div
@@ -158,7 +152,7 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* Full-width mega panel for desktop (keeps original behavior) */}
+      {/* Full-width mega panel for desktop */}
       <AnimatePresence>
         {isDesktop && activeMenu !== null && (
           <motion.div className="mega-panel" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }} onMouseEnter={() => setActiveMenu(activeMenu)} onMouseLeave={() => setActiveMenu(null)}>

@@ -1,10 +1,10 @@
 // src/components/SearchBar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import PRODUCTS from "../data/products"; // <-- your PRODUCTS array
+import PRODUCTS from "../data/products";
 
 // debounce helper
-const debounce = (fn, wait = 220) => {
+const debounce = (fn, wait = 180) => {
   let t;
   return (...args) => {
     clearTimeout(t);
@@ -12,173 +12,133 @@ const debounce = (fn, wait = 220) => {
   };
 };
 
-const SearchBar = ({ placeholder = "Search products...", minChars = 1 }) => {
-  const [q, setQ] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+export default function SearchBar({ placeholder = "Search products..." }) {
+  const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [results, setResults] = useState([]);
   const [highlight, setHighlight] = useState(-1);
-  const menuRef = useRef(null);
+  const containerRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
-  // Primary: attempt server endpoint, then fallback to local PRODUCTS
-  const fetchSuggestions = async (term) => {
-    if (!term || term.length < minChars) {
-      setSuggestions([]);
-      return;
-    }
-
-    // try backend endpoint first (non-blocking)
-    try {
-      const resp = await fetch(`/api/products?q=${encodeURIComponent(term)}`);
-      if (resp.ok) {
-        const data = await resp.json();
-        if (Array.isArray(data) && data.length) {
-          setSuggestions(data.slice(0, 8));
-          return;
-        }
-      }
-    } catch (err) {
-      // ignore; we'll fall back to local PRODUCTS
-    }
-
-    // fallback: filter local PRODUCTS
-    const termLower = term.toLowerCase();
-    const filtered = PRODUCTS.filter(p =>
-      (p.title || "").toLowerCase().includes(termLower)
-      || (p.brand || "").toLowerCase().includes(termLower)
-      || (p.category || "").toLowerCase().includes(termLower)
+  const fetchSuggestions = async (q) => {
+    if (!q || q.trim().length < 1) return [];
+    const term = q.toLowerCase();
+    // local filter (replace with API if available)
+    return PRODUCTS.filter(d =>
+      (d.title || "").toLowerCase().includes(term) ||
+      (d.brand || "").toLowerCase().includes(term) ||
+      (d.category || "").toLowerCase().includes(term)
     ).slice(0, 8);
-
-    setSuggestions(filtered);
   };
 
-  const debouncedFetch = React.useCallback(debounce(fetchSuggestions, 180), []);
-
   useEffect(() => {
-    if (q && q.trim().length >= minChars) {
-      debouncedFetch(q.trim());
-      setOpen(true);
-    } else {
+    let mounted = true;
+    if (!query) {
+      setResults([]);
       setOpen(false);
-      setSuggestions([]);
       setHighlight(-1);
+      return;
     }
-  }, [q, debouncedFetch, minChars]);
+    const id = setTimeout(async () => {
+      const res = await fetchSuggestions(query);
+      if (!mounted) return;
+      setResults(res);
+      setOpen(res.length > 0);
+      setHighlight(-1);
+    }, 160);
+    return () => { mounted = false; clearTimeout(id); };
+  }, [query]);
 
-  // close suggestions on outside click
   useEffect(() => {
     const onDoc = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
         setOpen(false);
-        setHighlight(-1);
       }
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  const performSearch = (term) => {
-    const trimmed = (term || "").trim();
-    setOpen(false);
-    setHighlight(-1);
-    if (!trimmed) {
-      navigate("/shop");
-      return;
-    }
-    navigate(`/shop?q=${encodeURIComponent(trimmed)}`);
-  };
-
-  const selectSuggestion = (item) => {
-    setOpen(false);
-    setHighlight(-1);
-    if (!item) return;
-
-    // your app's product route uses /product/:id — we'll navigate by id
-    if (item.id) {
-      navigate(`/product/${item.id}`);
-    } else if (item.slug) {
-      navigate(`/product/${item.slug}`);
-    } else if (item.title) {
-      navigate(`/shop?q=${encodeURIComponent(item.title)}`);
-    } else {
-      performSearch(q);
-    }
-  };
-
   const onKeyDown = (e) => {
-    if (!open || suggestions.length === 0) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        performSearch(q);
+    if (!open) {
+      if (e.key === "ArrowDown" && results.length) {
+        setOpen(true);
+        setHighlight(0);
       }
       return;
     }
-
     if (e.key === "ArrowDown") {
+      setHighlight((h) => Math.min(h + 1, results.length - 1));
       e.preventDefault();
-      setHighlight(h => Math.min(h + 1, suggestions.length - 1));
     } else if (e.key === "ArrowUp") {
+      setHighlight((h) => Math.max(h - 1, 0));
       e.preventDefault();
-      setHighlight(h => Math.max(h - 1, 0));
     } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (highlight >= 0 && highlight < suggestions.length) {
-        selectSuggestion(suggestions[highlight]);
+      if (highlight >= 0 && highlight < results.length) {
+        onSelect(results[highlight]);
       } else {
-        performSearch(q);
+        navigate(`/shop?q=${encodeURIComponent(query)}`);
+        setOpen(false);
       }
+      e.preventDefault();
     } else if (e.key === "Escape") {
       setOpen(false);
       setHighlight(-1);
     }
   };
 
+  const onSelect = (item) => {
+    // navigate to product route in the format /product/p{id}
+    if (!item) return;
+    const id = item.id ?? item.productId ?? item.slug ?? null;
+    const routeId = id ? `p${id}` : encodeURIComponent(item.title || item.brand || "");
+    navigate(`/product/${routeId}`);
+    setOpen(false);
+  };
+
   return (
-    <div className="searchbar" ref={menuRef} style={{ position: "relative" }}>
+    <div className="searchbar" ref={containerRef}>
       <input
         ref={inputRef}
         className="search-input"
+        type="search"
         placeholder={placeholder}
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        onFocus={() => { if (results.length) setOpen(true); }}
         onKeyDown={onKeyDown}
-        aria-autocomplete="list"
         aria-expanded={open}
-        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        aria-controls="search-suggestions"
         autoComplete="off"
       />
 
-      {open && suggestions && suggestions.length > 0 && (
-        <ul className="search-suggestions" role="listbox" aria-label="Search suggestions">
-          {suggestions.map((s, i) => {
-            const title = s.title || s.brand || "Product";
-            return (
-              <li
-                key={s.id || `${title}-${i}`}
-                role="option"
-                aria-selected={highlight === i}
-                className={`suggestion-item ${highlight === i ? "is-highlight" : ""}`}
-                onMouseEnter={() => setHighlight(i)}
-                onMouseDown={(ev) => ev.preventDefault()} // prevent blur before click
-                onClick={() => selectSuggestion(s)}
-              >
-                <div className="suggestion-left">
-                  {s.img ? <img src={s.img} alt={title} /> : <span className="s-avatar">{(title[0] || "").toUpperCase()}</span>}
-                </div>
-
-                <div className="suggestion-main">
-                  <div className="s-title">{title}</div>
-                  <div className="s-meta">{s.brand ? `${s.brand} • ${s.category}` : s.category}</div>
-                  {s.price !== undefined && <div className="s-sub">₹{s.price.toLocaleString()}</div>}
-                </div>
-              </li>
-            );
-          })}
+      {open && results.length > 0 && (
+        <ul id="search-suggestions" className="search-suggestions" role="listbox">
+          {results.map((r, idx) => (
+            <li
+              key={r.id ?? idx}
+              id={`sugg-${idx}`}
+              role="option"
+              aria-selected={highlight === idx}
+              className={`suggestion-item ${highlight === idx ? "is-highlight" : ""}`}
+              onMouseEnter={() => setHighlight(idx)}
+              onMouseDown={(ev) => { ev.preventDefault(); onSelect(r); }} // mousedown to avoid blur issues
+              tabIndex={0}
+            >
+              <div className="suggestion-left">
+                {r.img ? <img src={r.img} alt="" /> : <div className="s-avatar">{(r.title||"").slice(0,1).toUpperCase()}</div>}
+              </div>
+              <div className="suggestion-main">
+                <div className="s-title">{r.title}</div>
+                <div className="s-sub">{r.brand ? `${r.brand} • ${r.category}` : r.category}</div>
+                {r.price !== undefined && <div className="s-sub">₹{r.price.toLocaleString()}</div>}
+              </div>
+            </li>
+          ))}
         </ul>
       )}
     </div>
   );
-};
-
-export default SearchBar;
+}
